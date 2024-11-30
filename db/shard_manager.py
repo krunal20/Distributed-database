@@ -18,10 +18,13 @@ class ShardManager:
 
     def determine_shard(self, record_id):
         try:
-            for shard_id, (start_range, end_range) in self.shards.items():
-                if start_range <= record_id <= end_range:
-                    return shard_id
-            return None
+            # for shard_id, (start_range, end_range) in self.shards.items():
+            #     if start_range <= record_id <= end_range:
+            #         return shard_id
+            if self.shards.get(record_id//10) is not None:
+                return record_id//10
+            else:
+                return None
         except Exception as e:
             logging.error(f"Error determining shard for record ID {record_id}: {e}")
             return None
